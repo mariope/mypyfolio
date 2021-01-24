@@ -287,7 +287,14 @@ def sharpe_ratio(returns, risk_free=0, period=DAILY):
     See https://en.wikipedia.org/wiki/Sharpe_ratio for more details.
     """
 
-    return ep.sharpe_ratio(returns, risk_free=risk_free, period=period)
+    # return ep.sharpe_ratio(returns, risk_free=risk_free, period=period)
+    if period == DAILY:
+        N = 252
+    elif period == WEEKLY:
+        N = 52
+    elif period == MONTHLY:
+        N = 12
+    return ((returns.mean() - risk_free) / returns.std()) * np.sqrt(N)
 
 
 @deprecated(msg=DEPRECATION_WARNING)
@@ -652,7 +659,7 @@ SIMPLE_STAT_FUNCS = [
     ep.annual_return,
     ep.cum_returns_final,
     ep.annual_volatility,
-    ep.sharpe_ratio,
+    sharpe_ratio,
     ep.calmar_ratio,
     ep.stability_of_timeseries,
     ep.max_drawdown,
